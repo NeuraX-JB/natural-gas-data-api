@@ -1,0 +1,727 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-11-23T00:56:53Z",
+  "sources": {
+    "storage": {
+      "status": "ok",
+      "file": "storage.csv",
+      "sha256": "e38197ed4c76d8d26744f2374a327629931262ed3be8e06ff976094eb76d2fe2",
+      "row_count": 881,
+      "min_date": "2010-01-01",
+      "max_date": "2026-11-13",
+      "downloaded_at_utc": "2026-11-23T00:56:49Z",
+      "source_url": "https://www.eia.gov/dnav/ng/hist_xls/NW2_EPG0_SWO_R48_BCFw.xls",
+      "units": "Bcf",
+      "description": "Lower 48 states working gas in underground storage on Friday. Change is this week's reported stock minus the immediately preceding Friday's stock.",
+      "raw_inputs": [
+        {
+          "url": "https://www.eia.gov/dnav/ng/hist_xls/NW2_EPG0_SWO_R48_BCFw.xls",
+          "retrieved_at_utc": "2026-11-23T00:56:49Z",
+          "last_modified": "Thu, 19 Nov 2026 15:38:52 GMT",
+          "sha256": "560938c1d643b8fa4156551afc291d5cbb1e6cdf081af0b58feca24db94e640a",
+          "bytes": 67072
+        }
+      ],
+      "geography": "Lower 48 states",
+      "method_url": "https://ir.eia.gov/ngs/methodology.html",
+      "release_rule": "Normally published the following Thursday at 10:30 a.m. Eastern; holidays may change the date or time.",
+      "release_schedule_url": "https://ir.eia.gov/ngs/schedule.html",
+      "basis": "Net stock change. EIA's implied flow can differ when inventory is reclassified.",
+      "omitted_source_cells": {}
+    },
+    "spot": {
+      "status": "ok",
+      "file": "spot.csv",
+      "sha256": "c03f45420b2d41c931b999cf0780ffa319c79ac855698fcedf06bcd1a0510e84",
+      "row_count": 5732,
+      "min_date": "1997-01-07",
+      "max_date": "2026-11-17",
+      "downloaded_at_utc": "2026-11-23T00:56:49Z",
+      "source_url": "https://www.eia.gov/dnav/ng/hist_xls/RNGWHHDd.xls",
+      "units": "USD/MMBtu",
+      "description": "Henry Hub natural gas daily cash price as published by EIA. Only numeric observations are included. Holidays and other missing observations are never filled.",
+      "raw_inputs": [
+        {
+          "url": "https://www.eia.gov/dnav/ng/hist_xls/RNGWHHDd.xls",
+          "retrieved_at_utc": "2026-11-23T00:56:49Z",
+          "last_modified": "Wed, 18 Nov 2026 14:44:15 GMT",
+          "sha256": "e2e8606a40520d94ba21e024289ea28ec45bd80fdb83371cfbba323ea5e5b65a",
+          "bytes": 296448
+        }
+      ],
+      "geography": "Henry Hub, Louisiana",
+      "upstream_provider": "Refinitiv, an LSEG business, via the U.S. Energy Information Administration",
+      "release_rule": "Daily market observations appear in EIA's weekly spot and futures price release. The EIA table shows the next release date.",
+      "release_schedule_url": "https://www.eia.gov/dnav/ng/ng_pri_fut_s1_d.htm",
+      "method_url": "https://www.eia.gov/dnav/ng/TblDefs/ng_pri_fut_tbldef2.asp",
+      "omitted_source_cells": {
+        "missing_numeric_value": 1
+      }
+    },
+    "weather": {
+      "status": "ok",
+      "file": "weather.csv",
+      "sha256": "b68c71726b0e69ba14e1db3aa306ed3c34666c95be955ceca86d2c8879cbac9d",
+      "row_count": 2394,
+      "min_date": "1981-01-09",
+      "max_date": "2026-11-20",
+      "downloaded_at_utc": "2026-11-23T00:56:52Z",
+      "source_url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/",
+      "units": "°F-days (65°F base)",
+      "description": "CONUS population-weighted heating and cooling degree days. Sum of seven reported daily values from the previous Friday through Thursday. The Friday label aligns the observation to EIA storage.",
+      "raw_inputs": [
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1981/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:49Z",
+          "last_modified": "Tue, 29 Oct 2013 21:47:42 GMT",
+          "sha256": "79327d66cf2c243e21a3ec3ec79e128dc3d1de6eaca322e094075d66154320e6",
+          "bytes": 11226
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1981/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:49Z",
+          "last_modified": "Tue, 29 Oct 2013 21:47:42 GMT",
+          "sha256": "8157d6e731bed5b1c1b7c3d24c585984ebf97d975391aa82f85e1d9eb17ac388",
+          "bytes": 12454
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1982/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:49Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:10 GMT",
+          "sha256": "70570927c765b67939feb4899782e7ec59362597f42d8975df40da0eae86a85d",
+          "bytes": 11160
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1982/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:49Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:10 GMT",
+          "sha256": "f5b133f842f4133434f48b3c1fc2d8c243db44313692b7e94465cc27c30ca630",
+          "bytes": 12435
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1983/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:49Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:12 GMT",
+          "sha256": "d7df30a6a98bf389c7b73900302f1ac270e03657c67ac827283b4353b2734314",
+          "bytes": 11321
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1983/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:49Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:12 GMT",
+          "sha256": "7f0ad2be698c38eece80c7c47da30e7d88373b7ec85e44bf3aaeb79f240e334b",
+          "bytes": 12565
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1984/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:49Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:15 GMT",
+          "sha256": "28cf9d29bbfc2783931bfaa01deff064c44519499b60307bc98c1dc49d3f787b",
+          "bytes": 11263
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1984/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:49Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:15 GMT",
+          "sha256": "797d6b3fbb18a1a42bd3c0701cd00ff5df59a96697007c30d538d3c5d090cab8",
+          "bytes": 12536
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1985/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:49Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:17 GMT",
+          "sha256": "3dd0f285aa549289e1c06a139c4fd50873b2d2f86a0c96e43cbdeebb8b9d5892",
+          "bytes": 11183
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1985/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:49Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:17 GMT",
+          "sha256": "03dfd20659d7af35a1de9ae5b2b781f461f22ce55e6c718908c17e0bd5a80130",
+          "bytes": 12377
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1986/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:19 GMT",
+          "sha256": "a3b302916576c389988b6e43e2e5b3f42e280c8e787ce7d2fc050976e836969b",
+          "bytes": 11225
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1986/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:19 GMT",
+          "sha256": "e01f46e9e59b32066a20f929382b5795ba175fce47c9ebed0dbf8e3798e50951",
+          "bytes": 12385
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1987/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:22 GMT",
+          "sha256": "209d45238923cdb06dd9a6710badef1c550542137da775c6b21bfe6cb33e06fa",
+          "bytes": 11276
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1987/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:22 GMT",
+          "sha256": "3e4c56ec5b54f475f46fd1eedb6b591ae96216820a8dad3c63173091f4286eb7",
+          "bytes": 12447
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1988/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:24 GMT",
+          "sha256": "c4404a87ca04a08ade65fd86622b9313fe7d70f6079d6e3204cc6e7187d7ba6f",
+          "bytes": 11347
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1988/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:24 GMT",
+          "sha256": "7fed3f257f8939ee8306f2dcb5037b9c550d69db9623247cc3d6298bd0be5bf0",
+          "bytes": 12543
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1989/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:27 GMT",
+          "sha256": "7642dfca3db451a023403074bb2115fb9d8fe4ba48497198fe5f05cea86fbda0",
+          "bytes": 11180
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1989/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:27 GMT",
+          "sha256": "1421eefbb610af08dc629f1a376421954d38433b73b7c42beedaf990ddc8141e",
+          "bytes": 12445
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1990/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:29 GMT",
+          "sha256": "7680cee7f3f9ad7e70bb87bc5f0136d64d260d6f1af7215b1eb4a35ed053bcb7",
+          "bytes": 11260
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1990/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:29 GMT",
+          "sha256": "f1b77520ac19f7cd5752c6cd93ff03b6da01f69a7a3ddf638fd3aa9519bb3ecd",
+          "bytes": 12387
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1991/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:31 GMT",
+          "sha256": "928e2ee371d750ae0d7a62f39f69b3e77223d6e7efc6e163f31cee1af5c86de2",
+          "bytes": 11320
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1991/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:31 GMT",
+          "sha256": "6071de62ae02c414db0ccebe51b91260e2ef40d114b02b568d968ca003ea046b",
+          "bytes": 12435
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1992/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:34 GMT",
+          "sha256": "f8d475ce7f9e28319b4eba1c65032e490a8c6b3a399b4daa6dba90d4e35f9fec",
+          "bytes": 11089
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1992/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:34 GMT",
+          "sha256": "773811bddaaddb3cecc54a760647a46934323b58bc38de96f32284f5b2f221a8",
+          "bytes": 12493
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1993/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:36 GMT",
+          "sha256": "7e0b151fa01106e0bef1a5a9957d48b6736c5b500893ef10bca2aa2030c0aa94",
+          "bytes": 11216
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1993/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:36 GMT",
+          "sha256": "4b0bf76fe50312468871979b9230beb86645449cf880c76cc8e6ccb9dc92b636",
+          "bytes": 12533
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1994/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:40 GMT",
+          "sha256": "614201e07161eacad921244dc2395ba8c13a13fda1bac5c10b1db580a793ad29",
+          "bytes": 11227
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1994/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:40 GMT",
+          "sha256": "e31d7486fc5b68f347d8afc0ec96f66617126573486e5e97347346599107262a",
+          "bytes": 12424
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1995/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:43 GMT",
+          "sha256": "bc24ad6f203ea589859b5539af6d9681f282396610ed180c2477efc7df445062",
+          "bytes": 11287
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1995/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:43 GMT",
+          "sha256": "75870b944fa862462f5b9a4e9c62bce73be6f3f6279cbb3a89b4a46d21d84427",
+          "bytes": 12470
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1996/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:45 GMT",
+          "sha256": "f1f00af74877e0c5a248125b62bbda67519b6cc933af3c10420e76f7aa4d631b",
+          "bytes": 11245
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1996/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:45 GMT",
+          "sha256": "4e67b22b3321846cb008f0a4f3b387f61dc15291706557f3f95c6c71477e8879",
+          "bytes": 12530
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1997/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:48 GMT",
+          "sha256": "57bb442dfc07c70e216828049bc8448098b5f7bd61aac0107266056787b009eb",
+          "bytes": 11184
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1997/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:48 GMT",
+          "sha256": "bd91b8102cc758965939de0e82dd1c200222e240421d8413e211fa2bb4df0a74",
+          "bytes": 12524
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1998/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:50 GMT",
+          "sha256": "5da20d2fdde466703d7458f7cdeb411ce90a751b05bf915b91116a5f7ac787b6",
+          "bytes": 11381
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1998/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:50Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:50 GMT",
+          "sha256": "94bde1b23d3e4dc5aa14b1f07d54c07339a98f6370741deda004aab03be942d9",
+          "bytes": 12376
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1999/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:52 GMT",
+          "sha256": "9c0b7086f67c1e45855a3b4a300a0cacf0c489a4a8aa4627f31beff8112c8c2f",
+          "bytes": 11275
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/1999/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:52 GMT",
+          "sha256": "8f4462390270f1027fc380729e3c093da6cdaa64a7963e2ed8c3726c93103ddf",
+          "bytes": 12412
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2000/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:55 GMT",
+          "sha256": "15606ff0b0c27d099a37bd4ad1b21055c50a55bfacf537cb603bfb5e054628bd",
+          "bytes": 11293
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2000/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:55 GMT",
+          "sha256": "a15d6e8ccf18f6c561106c2ca788b5f545d0dd2379d91429bf34ac834f92157d",
+          "bytes": 12461
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2001/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:57 GMT",
+          "sha256": "f46cc43725855cad951d371d26e86c1c29552eff6929af7cac5147b35c612cc6",
+          "bytes": 11263
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2001/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:52:57 GMT",
+          "sha256": "7c3803544c413f9d3d0c4bd00f6a0ff0b5fd8ba3f90f8b3a993e36b15d299fc2",
+          "bytes": 12387
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2002/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:53:00 GMT",
+          "sha256": "0d87a9e710546da9fd6121584bf13f3b3a9c93e2cf83545598d0b53960329956",
+          "bytes": 11388
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2002/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:53:00 GMT",
+          "sha256": "6688ae8799ce9ad028941ec9b82268fcc065cd1a53ab7d8a0ca2abfd4227e50b",
+          "bytes": 12497
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2003/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:53:02 GMT",
+          "sha256": "66dace2930717aceb64b8f5b7e2388339a0ac1dba1eacfaf049a4376c0721dab",
+          "bytes": 11263
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2003/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:53:02 GMT",
+          "sha256": "6e66b31cc2074f8798c789766dbe6ae8244e69cffefd78270e6ef5fb787cebc0",
+          "bytes": 12441
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2004/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:53:04 GMT",
+          "sha256": "a82643732e461281e4b0e841cc1facc6d563e1b5e59ad37dfb0fff26b6f18c02",
+          "bytes": 11198
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2004/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:53:04 GMT",
+          "sha256": "d2c1093dc490ee045a35bae86d36ec990c492a6c98926b86ee9376dcbc5c8fd2",
+          "bytes": 12422
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2005/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:53:07 GMT",
+          "sha256": "6262cfb8b573948efbdfd354e3a74a81bd811da24fbcd839adaccc219eb058be",
+          "bytes": 11365
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2005/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:53:07 GMT",
+          "sha256": "646b884926bfb3f35992fbd82b64191b26233ca00e92dc3be295e163aa094b3a",
+          "bytes": 12443
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2006/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:53:10 GMT",
+          "sha256": "a260892276cbfce8bb4adfe4cde7c7a9c77c09184f6a5a76deb7af96d3b84b75",
+          "bytes": 11278
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2006/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:53:10 GMT",
+          "sha256": "a8ef21dc71a6a56ecb95d5593e0f90490f32f4fa92a7781dca68d713f85d30a6",
+          "bytes": 12429
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2007/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:53:12 GMT",
+          "sha256": "e5572c7bf163d9926eee16fcc853842062cc16c9d07952b29db643ba0718e478",
+          "bytes": 11319
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2007/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:53:12 GMT",
+          "sha256": "60c654effc7ce07e31a5b6428ff59ca49e9c1a096f917207904a51ff3abd5c79",
+          "bytes": 12322
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2008/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:53:15 GMT",
+          "sha256": "2153e9be2f683512622d80417eb5a3c90a3c71907b881abeafafef02de93db9a",
+          "bytes": 11243
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2008/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:53:15 GMT",
+          "sha256": "34a2143c88ac6ad8f6022bd938621a79570e41edbf2365e84da2774231fd07b4",
+          "bytes": 12496
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2009/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:53:18 GMT",
+          "sha256": "4c87353db08f268c6455fa3e1649be538c596cc8f3763255a3a2724159869cd3",
+          "bytes": 11163
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2009/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:53:18 GMT",
+          "sha256": "ba5e3e05d610cadff1d2a113260e22716ded978c5c30ec88ae988588ad5427d5",
+          "bytes": 12485
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2010/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:53:20 GMT",
+          "sha256": "20612a4c9c8394a7e8bcf6832c617adeaa74f48278ca72c0efd633fd5a90a277",
+          "bytes": 11387
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2010/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:53:20 GMT",
+          "sha256": "1a87e0fbb328730f24fa8d4b9b0bb35ef2cb4c4bb760b09dbb3947e4fd7f11e7",
+          "bytes": 12426
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2011/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:53:23 GMT",
+          "sha256": "fe3a95867bf9ce37783120cc31331fd197ef972da38c25e923d2a9b8e8ea08ee",
+          "bytes": 11343
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2011/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:53:23 GMT",
+          "sha256": "df64bf6a272acc13ba42dab07d93d6ae9ed011b55261236cc70d3ea6bb77b7a9",
+          "bytes": 12464
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2012/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:53:25 GMT",
+          "sha256": "a3d198dc2f50b04bb96b7dc709ea2435695abd82a6c87d596b00937209e3f227",
+          "bytes": 11371
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2012/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Tue, 29 Oct 2013 21:53:25 GMT",
+          "sha256": "e879213d2b93303bffd6f777fc7530e1425e1d60801276fac7fd55da302b82d1",
+          "bytes": 12348
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2013/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Thu, 02 Jan 2014 16:16:16 GMT",
+          "sha256": "ef5416718d33e3834359d13b1bc7b0abc64ec826efcd61efe4f5ae91f35301b3",
+          "bytes": 11285
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2013/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:51Z",
+          "last_modified": "Thu, 02 Jan 2014 16:16:16 GMT",
+          "sha256": "b1bdb40bee528350a7e5eeb9c7b715d62292b83c64657919e279b15813ae71fa",
+          "bytes": 12463
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2014/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Fri, 02 Jan 2015 08:09:57 GMT",
+          "sha256": "71608b007f623c335bafa65ca98cdf654dc1baca4eda30cc9538048ad477ed72",
+          "bytes": 11200
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2014/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Fri, 02 Jan 2015 08:09:57 GMT",
+          "sha256": "aada9765fdad56a556da1b857fb5d0237b2599ed5500b1a09a5715ce12bb8b6c",
+          "bytes": 12448
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2015/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Sat, 02 Jan 2016 08:12:33 GMT",
+          "sha256": "8eb28ebcca0c56ef516a8429fabccb890ac37e163dc6eaba1fa3c05ebc352bc9",
+          "bytes": 11306
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2015/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Sat, 02 Jan 2016 08:12:33 GMT",
+          "sha256": "a74307adfb3373ed31a8a76647f2330f563dce4344ebdc119463cb1b7837a3a9",
+          "bytes": 12289
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2016/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Mon, 02 Jan 2017 08:10:55 GMT",
+          "sha256": "a2dcfbbe4c502423eec381032a88807a0874578214f13a2f6d09d769e894899e",
+          "bytes": 11456
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2016/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Mon, 02 Jan 2017 08:10:55 GMT",
+          "sha256": "3a649aa8bc9f3acbaea02dda2012b6c69bd8ff255068852884c8d308bd63b2cd",
+          "bytes": 12292
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2017/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Tue, 02 Jan 2018 08:09:46 GMT",
+          "sha256": "c928d73177695b5f1819c8ed64d69dcc3dadaa5d109033dc7826e28fc5b4cd96",
+          "bytes": 11289
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2017/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Tue, 02 Jan 2018 08:09:46 GMT",
+          "sha256": "18d2de3ab968891cf1f1f267eefb282b5d22fc72dcc702ce1b618dcd9a320e12",
+          "bytes": 12283
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2018/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Wed, 02 Jan 2019 08:11:29 GMT",
+          "sha256": "7be9e021b9965cfe8924911267de78447b0138e7db989fb8fcdb20cddacb2185",
+          "bytes": 11450
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2018/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Wed, 02 Jan 2019 08:11:29 GMT",
+          "sha256": "1d12fadb0750e08ef7247264371221f8aaa59e4c36fbfbbbe97fe980b5d1f765",
+          "bytes": 12464
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2019/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Thu, 02 Jan 2020 08:14:51 GMT",
+          "sha256": "8bf9b4df521765489d67e6da7718e9e42143a6c7d099a7ce91003387fa8ac8a6",
+          "bytes": 11362
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2019/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Thu, 02 Jan 2020 08:14:51 GMT",
+          "sha256": "8918a07d638d12e8fe04933649453d2f936224655a03db7232da16bc8f081f10",
+          "bytes": 12450
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2020/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Sat, 02 Jan 2021 08:26:05 GMT",
+          "sha256": "ad648b452c277122d1d5d968488a7d8bd0e1180a123a2fd697b1eed1a189414c",
+          "bytes": 11369
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2020/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Sat, 02 Jan 2021 08:26:05 GMT",
+          "sha256": "64eb6d49f3b29bb4ff6b43c598c2db36881cb2ad129510e5f92d7eaf209b0ca9",
+          "bytes": 12439
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2021/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Sun, 02 Jan 2022 08:10:20 GMT",
+          "sha256": "37ffe463cf6ea294e677169f2287d3473cf223f30c1851d5c3578ea2f7a591ff",
+          "bytes": 11326
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2021/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Sun, 02 Jan 2022 08:10:20 GMT",
+          "sha256": "252a803fc0910c0f27bc0cf7406580a1d552caab1f399c42f5cc897947380869",
+          "bytes": 12372
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2022/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Mon, 02 Jan 2023 08:16:57 GMT",
+          "sha256": "14b5c43e2d0f0a7d040c7ffec4f32fbefc20a8f36060fa474fc99d749dd79de8",
+          "bytes": 11324
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2022/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Mon, 02 Jan 2023 08:16:57 GMT",
+          "sha256": "ff9c25a77d4647a597bf57f45b98e5436c944cb10a093717569d5a102fd7e6a6",
+          "bytes": 12444
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2023/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Tue, 02 Jan 2024 08:16:29 GMT",
+          "sha256": "9fd3095e9493cf57a0db24973de08a46b2a94064d885dd44517f41f36d7eba37",
+          "bytes": 11215
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2023/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Tue, 02 Jan 2024 08:16:29 GMT",
+          "sha256": "0a7f4fc2685bcd9c76672ae70c35c9cd552990883888f13f89af5b2ab9ec5aa2",
+          "bytes": 12397
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2024/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Thu, 02 Jan 2025 08:12:21 GMT",
+          "sha256": "ecd38f6152b9e53c268c5966df1914cf7fc4bccdfec446bf9eef60e036c4fdb6",
+          "bytes": 11347
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2024/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Thu, 02 Jan 2025 08:12:21 GMT",
+          "sha256": "3056d3a439e31526c491be8f6b0e554085deb91ec317a69fa11639e6f5fa59e0",
+          "bytes": 12366
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2025/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Fri, 02 Jan 2026 08:09:54 GMT",
+          "sha256": "ed19d9c3260ab4aff166946c6e5b49d456569a2f7bf66708e27b1151ef751f9b",
+          "bytes": 11298
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2025/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Fri, 02 Jan 2026 08:09:54 GMT",
+          "sha256": "b01d593f92818d29618229b299d925f906c8c2784befbee057915b250179ec8d",
+          "bytes": 12370
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2026/Population.Cooling.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Sun, 22 Nov 2026 08:07:11 GMT",
+          "sha256": "78da8b9cfcf528273f3037eb40161978dacd5c9d7ec3fc78fb575c49d9da38d3",
+          "bytes": 10185
+        },
+        {
+          "url": "https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/2026/Population.Heating.txt",
+          "retrieved_at_utc": "2026-11-23T00:56:52Z",
+          "last_modified": "Sun, 22 Nov 2026 08:07:11 GMT",
+          "sha256": "8c56b4c6225bc65de822655677defae60ddeb6d5bf8aa5ee7009002965780c3f",
+          "bytes": 10689
+        }
+      ],
+      "geography": "Contiguous United States (CONUS)",
+      "weight": "NOAA CPC Population weighting",
+      "method_url": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/cdus/degree_days/",
+      "aggregation": "Observed daily CONUS rows from Population.Heating.txt and Population.Cooling.txt. Both must be present for all seven dates.",
+      "release_rule": "CPC posts daily observations. Each seven-day total becomes available when both heating and cooling observations cover the preceding Friday through Thursday.",
+      "excluded_incomplete_weeks": [],
+      "last_complete_raw_day": "2026-11-20"
+    }
+  }
+}

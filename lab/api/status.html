@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#102c30" />
+    <title>Data status | Natural Gas Data API</title>
+    <meta
+      name="description"
+      content="Coverage, units and last successful retrieval for storage, weather and spot in the Natural Gas Data API."
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="api.js"></script>
+  </head>
+  <body data-page="status">
+    <header class="mast">
+      <div class="wrap">
+        <a class="wordmark" href="../"
+          ><span class="mark" aria-hidden="true">≋</span>Henry Hub Research</a
+        >
+        <nav aria-label="API">
+          <a href="./">Data API</a><a href="status.html" aria-current="page">Data status</a>
+        </nav>
+      </div>
+    </header>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="label">Natural gas data · API v1</div>
+          <h1>Data status</h1>
+          <p>
+            Check which observations are available and when the source files in this edition were
+            last retrieved.
+          </p>
+        </div>
+        <div class="heroaside">
+          <strong id="build-stamp">Loading…</strong><span>Snapshot generation time, UTC</span>
+        </div>
+      </div>
+    </section>
+    <main class="wrap workspace">
+      <div class="error" id="error" role="alert" hidden></div>
+      <section class="panel pad">
+        <div class="section-head">
+          <div>
+            <h2>Published sources</h2>
+            <p>
+              Coverage is the span of dates actually included. Weekends, holidays or missing
+              observations can leave gaps inside a span.
+            </p>
+          </div>
+          <a class="btn" href="v1/index.json">JSON catalog</a>
+        </div>
+        <div class="status-list" id="source-list" aria-live="polite"></div>
+      </section>
+      <section class="panel pad">
+        <h2>How to read these dates</h2>
+        <p class="lede">
+          The latest observation is the date measured by the source. Last successful retrieval
+          records when the project's data pipeline obtained the file or files behind this snapshot.
+          An older observation can still be the newest one the provider has released. Original
+          source URLs, individual retrieval records and hashes are in the
+          <a href="../data/manifest.json">source manifest</a>.
+        </p>
+      </section>
+      <footer class="footer">
+        <span>Henry Hub Research · Natural Gas Data API</span><a href="./">Open the API explorer</a>
+      </footer>
+    </main>
+  </body>
+</html>

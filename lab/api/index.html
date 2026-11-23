@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#102c30" />
+    <title>Natural Gas Data API | Henry Hub Research</title>
+    <meta
+      name="description"
+      content="Pull public Lower 48 storage, degree-day weather and Henry Hub spot data into a notebook with one HTTP request."
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="api.js"></script>
+  </head>
+  <body data-page="explore">
+    <a class="skip" href="#explore">Skip to dataset</a>
+    <header class="mast">
+      <div class="wrap">
+        <a class="wordmark" href="../"
+          ><span class="mark" aria-hidden="true">≋</span>Henry Hub Research</a
+        >
+        <nav aria-label="API">
+          <a href="./" aria-current="page">Data API</a><a href="status.html">Data status</a>
+        </nav>
+      </div>
+    </header>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="label">Research data · API v1</div>
+          <h1>Natural Gas Data API</h1>
+          <p>
+            Bring Lower 48 storage, U.S. heating and cooling degree days, and Henry Hub spot prices
+            into one weekly dataset.
+          </p>
+        </div>
+        <div class="heroaside">
+          <strong>One public GET</strong
+          ><span>Machine-readable JSON with download and notebook examples.</span>
+        </div>
+      </div>
+    </section>
+    <main class="wrap workspace" id="explore">
+      <div class="error" id="error" role="alert" hidden></div>
+      <section class="panel pad">
+        <div class="section-head">
+          <div>
+            <h2>Explore an endpoint</h2>
+            <p>Choose a resource and a published observation window.</p>
+          </div>
+          <a class="btn" href="natural_gas_api.ipynb" download>Download notebook</a>
+        </div>
+        <div class="controls">
+          <label
+            >Dataset<select id="dataset">
+              <option value="weekly">Joined weekly</option>
+              <option value="storage">Working gas storage</option>
+              <option value="weather">Heating and cooling</option>
+              <option value="spot">Henry Hub spot</option>
+            </select></label
+          ><label
+            >Observations<select id="partition">
+              <option value="recent">Latest 52 weeks</option>
+            </select></label
+          >
+        </div>
+        <div class="endpoint">
+          <span class="get">GET</span><a id="api-link" href="v1/recent.json">v1/recent.json</a>
+        </div>
+        <p class="hint" id="about">Loading data documentation…</p>
+        <div class="flexrow tool-row">
+          <div class="snippet-tabs" role="group" aria-label="Code examples">
+            <button type="button" data-code="python" aria-pressed="true">Python</button
+            ><button type="button" data-code="curl" aria-pressed="false">cURL</button
+            ><button type="button" data-code="js" aria-pressed="false">JavaScript</button>
+          </div>
+          <div class="buttons">
+            <span class="copy-note" id="notice" role="status"></span
+            ><button class="btn" type="button" id="copy-code">Copy code</button
+            ><button class="btn primary" type="button" id="copy-url">Copy URL</button>
+          </div>
+        </div>
+        <pre id="snippet" tabindex="0"></pre>
+      </section>
+      <section class="panel" aria-labelledby="preview-title">
+        <div class="flexrow tablehead">
+          <div>
+            <h2 id="preview-title">Response preview</h2>
+            <p id="summary" class="small" role="status">Loading observations…</p>
+          </div>
+          <button type="button" class="btn" id="csv" disabled>Export CSV</button>
+        </div>
+        <div class="tablebox" tabindex="0" aria-label="Response preview table">
+          <table>
+            <thead id="t-head"></thead>
+            <tbody id="t-body"></tbody>
+          </table>
+        </div>
+        <p class="subline" id="table-hint"></p>
+      </section>
+      <section class="panel pad">
+        <div class="section-head">
+          <div>
+            <h2>API reference</h2>
+            <p>
+              All endpoints use HTTPS GET and return UTF-8 JSON. Links open the underlying response.
+            </p>
+          </div>
+          <a class="btn" href="v1/index.json">Open schema</a>
+        </div>
+        <div class="docs-grid">
+          <article>
+            <h3>Weekly joins</h3>
+            <p>
+              Each Friday labels a Lower 48 inventory observation. Net stock changes can include
+              reclassifications. Weather totals and spot averages cover the previous Friday through
+              Thursday. <code>spot_days</code> counts the reported prices used in the average.
+            </p>
+          </article>
+          <article>
+            <h3>Request a period</h3>
+            <p>
+              Use <a href="v1/weekly.json">weekly.json</a> for all weeks,
+              <a href="v1/recent.json">recent.json</a> for the latest 52 and
+              <a href="v1/latest.json">latest.json</a> for the newest row. Annual files follow
+              <code>years/YYYY.json</code>. Use the selector to find a published year.
+            </p>
+          </article>
+          <article>
+            <h3>Missing observations</h3>
+            <p>
+              JSON <code>null</code> means the source or the underlying comparison is unavailable. A
+              reported zero is preserved. Calendar days without a spot quote have no weight in the
+              mean.
+            </p>
+          </article>
+          <article>
+            <h3>Release timing</h3>
+            <p>
+              The API contains historical observations from each source's latest saved files.
+              Revised figures can appear. The observation date identifies the period measured. The
+              source can release that figure later. See
+              <a href="status.html">source coverage and retrieval times</a>.
+            </p>
+          </article>
+        </div>
+        <details class="dictionary">
+          <summary>Field definitions</summary>
+          <dl id="definitions"></dl>
+        </details>
+      </section>
+      <footer class="footer">
+        <span>Henry Hub Research · Natural Gas Data API</span
+        ><span class="footlinks"
+          ><a href="status.html">Data status</a><a href="../">Research portfolio</a></span
+        >
+      </footer>
+    </main>
+  </body>
+</html>
