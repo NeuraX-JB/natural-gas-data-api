@@ -10,12 +10,14 @@
       content="Coverage, units and last successful retrieval for storage, weather and spot in the Natural Gas Data API."
     />
     <link rel="stylesheet" href="style.css" />
+    <script defer src="response.js"></script>
     <script defer src="api.js"></script>
   </head>
   <body data-page="status">
+    <a class="skip" href="#status">Skip to source status</a>
     <header class="mast">
       <div class="wrap">
-        <a class="wordmark" href="../"
+        <a class="wordmark" href="../../"
           ><span class="mark" aria-hidden="true">≋</span>Henry Hub Research</a
         >
         <nav aria-label="API">
@@ -33,13 +35,15 @@
             last retrieved.
           </p>
         </div>
-        <div class="heroaside">
+        <div class="heroaside status-stamp">
           <strong id="build-stamp">Loading…</strong><span>Snapshot generation time, UTC</span>
         </div>
       </div>
     </section>
-    <main class="wrap workspace">
+    <main class="wrap workspace" id="status">
       <div class="error" id="error" role="alert" hidden></div>
+      <p class="snapshot-note" id="snapshot-note">This repository contains a frozen source edition. Loading its timestamp…</p>
+      <noscript><p class="error">Interactive previews require JavaScript. Read the <a href="v1/index.json">catalog</a> or <a href="v1/weekly.json">weekly JSON</a> directly.</p></noscript>
       <section class="panel pad">
         <div class="section-head">
           <div>
@@ -58,7 +62,7 @@
         <p class="lede">
           The latest observation is the date measured by the source. Last successful retrieval
           records when the project's data pipeline obtained the file or files behind this snapshot.
-          An older observation can still be the newest one the provider has released. Original
+          An older observation can still be the newest one the provider has released. The recorded pipeline status describes the saved retrieval, not provider uptime now. The legacy catalog key <code>built_at_utc</code> is the source manifest generation time; rebuilding this edition does not make its observations newer. Original
           source URLs, individual retrieval records and hashes are in the
           <a href="../data/manifest.json">source manifest</a>.
         </p>

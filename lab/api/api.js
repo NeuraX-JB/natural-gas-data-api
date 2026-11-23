@@ -19,6 +19,7 @@
   const fetched = (stamp) =>
     stamp ? day(stamp) + " · " + stamp.slice(11, 16) + " UTC" : "Unavailable";
   const root = new URL(".", location.href);
+  const contract = globalThis.NaturalGasContract;
   let catalog,
     currentRows = [],
     currentName = "",
@@ -30,9 +31,18 @@
     $("error").textContent = message;
   }
   async function json(url) {
-    const r = await fetch(url);
-    if (!r.ok) throw Error("HTTP " + r.status);
-    return r.json();
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 25000);
+    try {
+      const r = await fetch(url, { signal: controller.signal });
+      if (!r.ok) throw Error("HTTP " + r.status);
+      return await r.json();
+    } catch (error) {
+      if (error.name === "AbortError") throw Error("request timed out after 25 seconds");
+      throw error;
+    } finally {
+      clearTimeout(timer);
+    }
   }
   function addOptions(control, entries, selected) {
     control.replaceChildren(
@@ -65,7 +75,7 @@
       return (
         'import json\nfrom urllib.request import urlopen\n\nwith urlopen("' +
         url +
-        '") as response:\n    data = json.load(response)'
+        '", timeout=25) as response:\n    data = json.load(response)'
       );
     if (format === "js")
       return (
@@ -103,7 +113,12 @@
     const preview = rows.slice(-6).reverse();
     const rendered = preview.map((row) => {
       const tr = el("tr");
-      for (const field of fields) tr.append(el("td", friendly(row[field], field)));
+      for (const field of fields) {
+        const cell = el(field === meta.key ? "th" : "td", friendly(row[field], field));
+        if (field === meta.key) cell.scope = "row";
+        if (row[field] === null) cell.setAttribute("aria-label", "Unavailable");
+        tr.append(cell);
+      }
       return tr;
     });
     $("t-body").replaceChildren(...rendered);
@@ -117,10 +132,11 @@
             ? day(rows[0][meta.key])
             : day(rows[0][meta.key]) + " – " + day(rows.at(-1)[meta.key]))
         : "");
-    $("table-hint").textContent =
-      rows.length > 1
-        ? "Showing the newest " + preview.length + " first. The JSON and CSV are chronological."
-        : "The latest endpoint returns a single JSON object. Other time-series endpoints return arrays.";
+    $("table-caption").textContent = meta.label + " · " + ($("partition").selectedOptions[0]?.textContent || "Observations");
+    $("table-hint").textContent = rows.length === 0 ? "This endpoint has no observations." :
+      "Showing the newest " + preview.length + " first. " +
+      (name === "weekly" && $("partition").value === "latest" ? "This endpoint returns one JSON object." : "This endpoint returns a chronological JSON array.") +
+      " A dash means unavailable; zero is an observed zero. CSV keeps missing values blank.";
   }
   async function loadSelection() {
     const sequence = ++requestVersion,
@@ -129,6 +145,7 @@
     currentRows = [];
     currentName = name;
     $("csv").disabled = true;
+    $("preview").setAttribute("aria-busy", "true");
     $("summary").textContent = "Loading observations…";
     $("t-head").replaceChildren();
     $("t-body").replaceChildren();
@@ -147,9 +164,7 @@
     try {
       const blob = await json(url);
       if (sequence !== requestVersion) return;
-      if (!Array.isArray(blob) && (!blob || !(catalog.datasets[name].key in blob)))
-        throw Error("Unexpected API response");
-      currentRows = Array.isArray(blob) ? blob : [blob];
+      currentRows = contract.validateRows(name, blob, name === "weekly" && period === "latest");
       showTable(currentRows, name);
       $("csv").disabled = !currentRows.length;
     } catch (e) {
@@ -161,6 +176,8 @@
         );
         $("summary").textContent = "Response unavailable";
       }
+    } finally {
+      if (sequence === requestVersion) $("preview").setAttribute("aria-busy", "false");
     }
   }
   function configure(name, suggestedPeriod) {
@@ -230,6 +247,8 @@
         ["Units", typeof info.units === "string" ? info.units : JSON.stringify(info.units)],
         ["Latest observation", day(info.last_date)],
         ["Last successful retrieval", fetched(info.updated_at_utc)],
+        ["Elapsed since retrieval", contract.ageLabel(info.updated_at_utc)],
+        ["Recorded pipeline status", info.status || "Not recorded"],
       ];
       for (const [name, value] of cells) {
         const box = el("div");
@@ -241,7 +260,9 @@
     }
   }
   async function main() {
-    catalog = await json(new URL("v1/index.json", root));
+    catalog = contract.validateCatalog(await json(new URL("v1/index.json", root)));
+    $("snapshot-note").textContent = "Frozen source edition: " + fetched(catalog.built_at_utc) +
+      ". These files do not refresh automatically. Retrieval age uses this device's clock; it is not a check of provider availability.";
     if (document.body.dataset.page === "status") {
       showStatus();
       return;
@@ -249,6 +270,7 @@
     const params = new URLSearchParams(location.search),
       wanted = params.get("resource");
     const name = Object.hasOwn(catalog.datasets, wanted) ? wanted : "weekly";
+    for (const control of document.querySelectorAll("[data-needs-catalog]")) control.disabled = false;
     $("dataset").value = name;
     $("dataset").onchange = () => configure($("dataset").value, "");
     $("partition").onchange = loadSelection;
@@ -268,9 +290,14 @@
     }
     await configure(name, params.get("window") || defaultPartition(name));
   }
-  main().catch((e) =>
+  main().catch((e) => {
     displayError(
       "The API catalog could not be loaded (" + e.message + "). Reload the page to try again.",
-    ),
-  );
+    );
+    if ($("summary")) $("summary").textContent = "Catalog unavailable; endpoint links remain usable.";
+    if ($("preview")) $("preview").setAttribute("aria-busy", "false");
+    if ($("about")) $("about").textContent = "The catalog is unavailable. Open a JSON endpoint directly or reload.";
+    if ($("build-stamp")) $("build-stamp").textContent = "Snapshot time unavailable";
+    if ($("snapshot-note")) $("snapshot-note").textContent = "Frozen source edition. Its timestamp could not be loaded; consult the source manifest before using these observations.";
+  });
 })();

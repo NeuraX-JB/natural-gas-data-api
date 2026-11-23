@@ -530,3 +530,16 @@ dd {
     margin-bottom: 14px;
   }
 }
+
+/* Keep keyboard focus, units, and edition information available at every width. */
+:focus-visible { outline: 3px solid #a95500; outline-offset: 3px; }
+button:disabled, select:disabled { cursor: not-allowed; opacity: .65; }
+caption { text-align: left; padding: 10px 13px; font-weight: 700; color: var(--ink); }
+tbody th { background: transparent; font-weight: 600; }
+.snapshot-note { border-left: 3px solid var(--teal); background: #eaf3ef; padding: 13px 16px; margin: 0 0 19px; font-size: 14px; }
+.home-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(260px,100%),1fr)); gap: 18px; }
+.home-grid .panel { margin-bottom: 0; }
+.home-grid h2 { margin-bottom: 12px; }
+.home-grid p { color: var(--muted); }
+@media (max-width:720px) { .heroaside.status-stamp { display: grid; } }
+@media (prefers-reduced-motion:reduce) { * { scroll-behavior: auto !important; } }

@@ -10,7 +10,7 @@ from urllib.request import urlopen
 
 base = (
     "https://neurax-jb.github.io/"
-    "Henry-Hub-Futures-Curve-Explorer-How-the-Natural-Gas-Market-prices-winter/lab/api"
+    "natural-gas-data-api/lab/api"
 )
 with urlopen(f"{base}/v1/weekly.json", timeout=25) as response:
     weeks = json.load(response)
@@ -43,11 +43,23 @@ EIA is the source of working gas stocks and Henry Hub spot observations. EIA att
 
 ## Rebuild
 
-From the lab directory, run the following after refreshing the shared CSVs and manifest. The API builder and tests use Python 3.10+ and its standard library.
+To reproduce this frozen edition, keep the checked-in CSVs and manifest together. From the lab directory, run the following without refreshing the upstream data. The API builder and tests use Python 3.10+ and its standard library.
 
 ```sh
 python api/build_api.py
 python -m unittest discover -s api -p test_api.py
+node --test api/test_response.cjs
 ```
 
-The notebook runs in Jupyter with pandas and matplotlib. Its default base is the live GitHub Pages path. Set `NATGAS_API_BASE` to point to a local or hosted API mirror. Previously saved cell output belongs to the edition when the example was built. Running all cells fetches the currently published data.
+The notebook runs in Jupyter with pandas and matplotlib. Its default base is this repository’s standalone Pages API. Set `NATGAS_API_BASE` to point to a local or hosted API mirror. Saved outputs are cleared so an unrun notebook cannot display results from another endpoint. Running all cells reads the selected mirror and prints its snapshot timestamp.
+
+
+## Build and timestamp contract
+
+The builder rejects duplicate headers, ragged rows, noncanonical dates, nonfinite values, negative inventory and unreconciled weekly changes. A missing prior Friday requires a null stock change. It stages every endpoint before replacing the managed target directory and removes obsolete year partitions. An incomplete staging write leaves the previous target intact; a failed promotion restores it. An existing target is accepted only when it has a recognizable v1 API catalog, every required endpoint, and only the managed JSON/year layout. Unrelated files, catalogs, directories or symlinks are rejected without replacing the target. Choose a new, nonexistent directory when creating a fresh export. Obsolete year partitions are removed only from a validated managed snapshot.
+
+Build before deploying. Replacing an existing directory takes two renames and is not a transaction for concurrent HTTP readers. A sibling build lock prevents two builders from replacing the same target at once. If a process is forcibly terminated, inspect its lock and backup before manual recovery.
+
+For compatibility, catalog key `built_at_utc` retains its name but records the **source manifest generation time**, not the time the API was rebuilt or deployed. Source `updated_at_utc` records successful retrieval. Neither timestamp proves first-release availability. The source page shows elapsed retrieval age from the reader's clock and saved pipeline status, not provider uptime.
+
+The browser validates endpoint shape, dates, numeric types, required null conventions and price denominators before allowing CSV export. A 25-second request timeout produces a recoverable error. Direct JSON links remain available without JavaScript.

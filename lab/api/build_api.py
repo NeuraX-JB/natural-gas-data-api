@@ -7,8 +7,11 @@ import csv
 import hashlib
 import json
 import math
+import re
+import shutil
+import tempfile
 from collections import defaultdict
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -28,7 +31,7 @@ DATASETS = {
         "key": "week_ending",
         "frequency": "Weekly",
         "columns": ["week_ending", "working_gas_bcf", "change_bcf"],
-        "about": "Working gas in underground storage for the Lower 48. A positive weekly change is a net injection.",
+        "about": "Working gas in underground storage for the Lower 48. A positive weekly change is a net stock increase, which can differ from physical flow.",
     },
     "weather": {
         "label": "Heating and cooling",
@@ -50,14 +53,25 @@ FIELD_NOTES = {
     "period_start": {"label": "Period start", "unit": "date", "type": "YYYY-MM-DD", "definition": "First calendar day in the weather and spot sampling window (the preceding Friday)."},
     "period_end": {"label": "Period end", "unit": "date", "type": "YYYY-MM-DD", "definition": "Last calendar day in the sampling window (Thursday before the storage Friday)."},
     "working_gas_bcf": {"label": "Working gas", "unit": "Bcf", "type": "number", "definition": "Lower 48 working gas inventory, billion cubic feet."},
-    "change_bcf": {"label": "Weekly change", "unit": "Bcf", "type": "number or null", "definition": "Current working gas inventory less inventory on the prior Friday. An injection is positive. A withdrawal is negative."},
+    "change_bcf": {"label": "Weekly stock change", "unit": "Bcf", "type": "number or null", "definition": "Current working gas inventory less inventory on the prior Friday. Positive is a net stock increase; negative is a decrease. Reclassifications can make this differ from physical injections or withdrawals."},
     "hdd": {"label": "Heating degree days", "unit": "°F-days", "type": "number or null", "definition": "Weekly sum of population-weighted heating degree days from NOAA CPC, 65°F base."},
     "cdd": {"label": "Cooling degree days", "unit": "°F-days", "type": "number or null", "definition": "Weekly sum of population-weighted cooling degree days from NOAA CPC, 65°F base."},
-    "spot_avg_usd_mmbtu": {"label": "Mean spot", "unit": "$/MMBtu", "type": "number or null", "definition": "Arithmetic mean of the Henry Hub daily spot quotes published within the seven-day window, rounded to four decimal places."},
+    "spot_avg_usd_mmbtu": {"label": "Mean spot", "unit": "$/MMBtu", "type": "number or null", "definition": "Arithmetic mean of Henry Hub daily spot quotes whose observation dates fall within the seven-day window, rounded to four decimal places. Observation dates are not publication dates."},
     "spot_days": {"label": "Spot quotes", "unit": "days", "type": "integer", "definition": "Count of reported daily spot prices inside the sampling window. Unreported dates receive no weight."},
     "date": {"label": "Quote date", "unit": "date", "type": "YYYY-MM-DD", "definition": "Calendar date of the observed Henry Hub spot quote."},
     "usd_per_mmbtu": {"label": "Henry Hub spot", "unit": "$/MMBtu", "type": "number", "definition": "Henry Hub natural gas spot price in U.S. dollars per million British thermal units."},
 }
+
+def parse_date(value):
+    if not isinstance(value, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
+        raise ValueError(f"Expected YYYY-MM-DD date, got {value!r}")
+    return date.fromisoformat(value).isoformat()
+
+
+def parse_timestamp(value):
+    if not isinstance(value, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z", value):
+        raise ValueError(f"Expected UTC timestamp YYYY-MM-DDTHH:MM:SSZ, got {value!r}")
+    return datetime.fromisoformat(value.replace("Z", "+00:00"))
 
 def parse_number(value, *, optional=False):
     if value is None or not str(value).strip():
@@ -76,11 +90,13 @@ def read_csv(file, fields, date_key):
     seen = set()
     with file.open(encoding="utf-8-sig", newline="") as handle:
         reader = csv.DictReader(handle)
-        missing = set(fields) - set(reader.fieldnames or [])
-        if missing:
-            raise ValueError(f"{file.name} missing fields {sorted(missing)}")
+        headers = reader.fieldnames or []
+        if len(headers) != len(set(headers)) or set(headers) != set(fields):
+            raise ValueError(f"{file.name}: expected unique headers {fields}, got {headers}")
         for raw in reader:
-            row = {k: date.fromisoformat(raw[k]).isoformat() if k in dates else parse_number(raw[k], optional=k in optional) for k in fields}
+            if None in raw or any(value is None for value in raw.values()):
+                raise ValueError(f"{file.name}: wrong number of CSV cells on line {reader.line_num}")
+            row = {k: parse_date(raw[k]) if k in dates else parse_number(raw[k], optional=k in optional) for k in fields}
             key = row[date_key]
             if key in seen:
                 raise ValueError(f"{file.name}: duplicate {key}")
@@ -96,7 +112,18 @@ def read_csv(file, fields, date_key):
             rows.append(row)
     if not rows:
         raise ValueError(f"{file.name} is empty")
-    return sorted(rows, key=lambda x: x[date_key])
+    rows.sort(key=lambda x: x[date_key])
+    if file.stem == "storage":
+        previous = None
+        for row in rows:
+            if row["working_gas_bcf"] < 0:
+                raise ValueError(f"Negative working gas inventory at {row[date_key]}")
+            contiguous = previous is not None and date.fromisoformat(row[date_key]) - date.fromisoformat(previous[date_key]) == timedelta(days=7)
+            expected = row["working_gas_bcf"] - previous["working_gas_bcf"] if contiguous else None
+            if row["change_bcf"] != expected:
+                raise ValueError(f"Storage change does not reconcile to the prior Friday at {row[date_key]}")
+            previous = row
+    return rows
 
 def period_for(week_ending):
     anchor = date.fromisoformat(week_ending)
@@ -131,7 +158,11 @@ def write_json(path, value):
     temp.replace(path)
 
 def build(source, target):
-    manifest = json.loads((source / "manifest.json").read_text())
+    source, target = Path(source), Path(target)
+    if target.is_symlink() or source.resolve().is_relative_to(target.resolve()):
+        raise ValueError("Target must be a separate generated-output directory")
+    manifest = json.loads((source / "manifest.json").read_text(encoding="utf-8"))
+    snapshot_time = parse_timestamp(manifest["generated_at_utc"])
     rows = {}
     for name in ("storage", "weather", "spot"):
         file = source / (name + ".csv")
@@ -151,8 +182,8 @@ def build(source, target):
     for name in ("storage", "weather", "spot"):
         meta = manifest["sources"][name]
         stamp = meta["downloaded_at_utc"]
-        if not stamp:
-            raise ValueError(f"Source {name} lacks a successful fetch timestamp")
+        if parse_timestamp(stamp) > snapshot_time:
+            raise ValueError(f"Source {name} was retrieved after the manifest snapshot time")
         keys = [r[DATASETS[name]["key"]] for r in rows[name]]
         sources[name] = {
             "label": DATASETS[name]["label"], "source_url": meta["source_url"],
@@ -163,10 +194,11 @@ def build(source, target):
         "version": "v1", "built_at_utc": manifest["generated_at_utc"], "fields": FIELD_NOTES,
         "sources": sources, "datasets": {}, "release_note": "Snapshot dates are observation dates. Historical records reflect the current source files and may include revisions.",
     }
+    outputs = {}
     for name in DATASETS:
         meta = DATASETS[name]
         data = rows[name]
-        write_json(target / (name+".json"), data)
+        outputs[name+".json"] = data
         by_year = defaultdict(list)
         for r in data:
             by_year[r[meta["key"]][:4]].append(r)
@@ -174,12 +206,134 @@ def build(source, target):
                    "last_date": data[-1][meta["key"]], "rows": len(data), "years": sorted(by_year)}
         if name == "weekly":
             for year, annual in by_year.items():
-                write_json(target / "years" / (year+".json"), annual)
-            write_json(target / "latest.json", data[-1])
-            write_json(target / "recent.json", data[-52:])
+                outputs["years/"+year+".json"] = annual
+            outputs["latest.json"] = data[-1]
+            outputs["recent.json"] = data[-52:]
         catalog["datasets"][name] = summary
-    write_json(target / "index.json", catalog)
+    outputs["index.json"] = catalog
+    publish_snapshot(target, outputs)
     return catalog
+
+
+def require_managed_target(target):
+    """Refuse to replace directories that are not recognizable v1 API output.
+
+    Obsolete YYYY.json partitions are allowed, but unrelated files, directories,
+    symlinks, catalogs and endpoint shapes are not. This check never writes.
+    """
+    def refuse(detail):
+        raise ValueError(f"Refusing to replace unmanaged API target {target}: {detail}")
+
+    if target.is_symlink():
+        refuse("target is a symlink")
+    if not target.exists():
+        return
+    if not target.is_dir():
+        refuse("target is not a directory")
+    required = {"index.json", "latest.json", "recent.json", *(name + ".json" for name in DATASETS)}
+    files = set()
+    for entry in target.rglob("*"):
+        relative = entry.relative_to(target).as_posix()
+        if entry.is_symlink():
+            refuse(f"symlink {relative}")
+        if entry.is_dir():
+            if relative != "years":
+                refuse(f"unrecognized directory {relative}")
+        elif entry.is_file() and (relative in required or re.fullmatch(r"years/\d{4}\.json", relative)):
+            files.add(relative)
+        else:
+            refuse(f"unrecognized file {relative}")
+    if not required <= files:
+        refuse("missing required API endpoints")
+
+    def load(relative):
+        try:
+            return json.loads((target / relative).read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, ValueError) as exc:
+            refuse(f"unreadable JSON in {relative}: {exc}")
+
+    catalog = load("index.json")
+    try:
+        if not isinstance(catalog, dict) or catalog.get("version") != "v1":
+            refuse("unrecognized catalog version")
+        parse_timestamp(catalog["built_at_utc"])
+        if set(catalog["datasets"]) != set(DATASETS) or set(catalog["sources"]) != {"storage", "weather", "spot"}:
+            refuse("unrecognized catalog datasets or sources")
+        for field in FIELD_NOTES:
+            definition = catalog["fields"][field]
+            if not isinstance(definition, dict) or any(not isinstance(definition.get(key), str) for key in ("label", "unit", "type", "definition")):
+                refuse(f"unrecognized field definition {field}")
+        for name, expected in DATASETS.items():
+            meta = catalog["datasets"][name]
+            if meta["path"] != name + ".json" or meta["key"] != expected["key"] or meta["columns"] != expected["columns"]:
+                refuse(f"unrecognized dataset contract {name}")
+            first, last = parse_date(meta["first_date"]), parse_date(meta["last_date"])
+            if type(meta["rows"]) is not int or meta["rows"] < 1 or first > last:
+                refuse(f"invalid coverage in {name}")
+            years = meta["years"]
+            if not isinstance(years, list) or not years or any(not isinstance(year, str) or not re.fullmatch(r"\d{4}", year) for year in years) or years != sorted(set(years)):
+                refuse(f"invalid year catalog in {name}")
+        if not {f"years/{year}.json" for year in catalog["datasets"]["weekly"]["years"]} <= files:
+            refuse("cataloged year endpoint is missing")
+    except (KeyError, TypeError, ValueError) as exc:
+        refuse(f"invalid v1 catalog: {exc}")
+
+    for relative in files - {"index.json"}:
+        value = load(relative)
+        rows = [value] if relative == "latest.json" else value
+        name = Path(relative).stem if relative in required and relative not in {"latest.json", "recent.json"} else "weekly"
+        expected = DATASETS[name]
+        if not isinstance(rows, list) or not rows or any(not isinstance(row, dict) or set(row) != set(expected["columns"]) for row in rows):
+            refuse(f"unrecognized API rows in {relative}")
+        try:
+            dates = [parse_date(row[expected["key"]]) for row in rows]
+        except (TypeError, ValueError) as exc:
+            refuse(f"invalid observation dates in {relative}: {exc}")
+        if dates != sorted(set(dates)):
+            refuse(f"unordered or duplicate dates in {relative}")
+        if relative.startswith("years/") and any(day[:4] != Path(relative).stem for day in dates):
+            refuse(f"year file contains dates from another year: {relative}")
+
+
+def publish_snapshot(target, outputs):
+    """Stage a complete managed directory; roll back if promotion fails.
+
+    Build before deployment, not in a live document root: replacing an existing
+    directory requires two renames. The lock prevents concurrent builder runs.
+    """
+    target = Path(target)
+    require_managed_target(target)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    lock = target.with_name("." + target.name + ".build-lock")
+    try:
+        lock.mkdir()
+    except FileExistsError as exc:
+        raise RuntimeError(f"Another build holds {lock}; inspect it before retrying") from exc
+    stage = backup = None
+    try:
+        stage = Path(tempfile.mkdtemp(prefix="." + target.name + "-stage-", dir=target.parent))
+        for relative, value in outputs.items():
+            write_json(stage / relative, value)
+        require_managed_target(stage)
+        # Recheck after staging in case another process created or changed target.
+        require_managed_target(target)
+        if target.exists():
+            backup = Path(tempfile.mkdtemp(prefix="." + target.name + "-backup-", dir=target.parent))
+            backup.rmdir()
+            target.replace(backup)
+        try:
+            stage.replace(target)
+        except BaseException:
+            if backup is not None:
+                backup.replace(target)
+                backup = None
+            raise
+        if backup is not None:
+            shutil.rmtree(backup)
+    finally:
+        if stage is not None and stage.exists():
+            shutil.rmtree(stage)
+        lock.rmdir()
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)

@@ -1,17 +1,14 @@
-# Data use and attribution
+# Data sources and attribution
 
-This repository presents independent research and educational applications. Public access to source data does not necessarily grant unrestricted redistribution or commercial reuse.
+This project contains three observation series and a weekly join of them. It does not bundle GFS forecast fields, Census geometry, SEC futures curves or their licenses.
 
-| Source | Material used | Where documented |
+| Source | Material in this repository | Evidence |
 | :--- | :--- | :--- |
-| U.S. Energy Information Administration (EIA) | Lower 48 storage, Henry Hub spot observations and historical futures archive | [Shared source notes](lab/data/README.md), [EIA data](https://www.eia.gov/naturalgas/) |
-| NOAA Climate Prediction Center | Observed population-weighted degree days | [Shared source notes](lab/data/README.md) |
-| NOAA GFS operational archive | Archived temperature forecast fields | [Weather methodology](lab/weather/README.md) |
-| U.S. Census Bureau / us-atlas | Population sampling weights and state geometry | [Weather methodology](lab/weather/README.md), [us-atlas license](lab/weather/research/US_ATLAS_LICENSE) |
-| SEC filings | Selected reconstructed futures curve snapshots and archived price examples | [Curve explorer](https://neurax-jb.github.io/Henry-Hub-Futures-Curve-Explorer-How-the-Natural-Gas-Market-prices-winter/), [Industrial simulator](https://neurax-jb.github.io/Henry-Hub-Futures-Curve-Explorer-How-the-Natural-Gas-Market-prices-winter/lab/industrial/) |
+| U.S. Energy Information Administration | Lower 48 working gas stocks and Henry Hub daily spot observations | [Source definitions](lab/data/README.md), [retrieval records and SHA-256 hashes](lab/data/manifest.json), [EIA natural gas data](https://www.eia.gov/naturalgas/) |
+| NOAA Climate Prediction Center | Observed population-weighted CONUS heating and cooling degree days, base 65°F | [Aggregation method](lab/data/README.md), [raw source records](lab/data/manifest.json), [NOAA archive](https://ftp.cpc.ncep.noaa.gov/htdocs/degree_days/weighted/daily_data/) |
 
-EIA attributes the underlying Henry Hub spot price data to Refinitiv, an LSEG business. Check the relevant third-party terms before redistributing or using those quotes commercially. Filings may include third-party information and do not automatically confer a redistribution license.
+The [API catalog](lab/api/v1/index.json) documents units, null conventions, coverage and retrieval times. Observation dates identify the period measured, not when a user could first have obtained the figure. These are frozen current-vintage observations; historical revisions may be present.
 
-The [source manifest](lab/data/manifest.json) documents retrieval times and hashes; the [API metadata](lab/api/v1/index.json) documents coverage and units. Historical source files may contain revisions.
+EIA attributes the underlying Henry Hub spot data to Refinitiv, an LSEG business. Public access does not establish unrestricted redistribution or commercial reuse. Check the applicable provider terms before redistributing those observations.
 
-No repository-wide license is declared. The separate us-atlas license remains applicable to its covered material. A repository-wide license and the rights to any third-party datasets or media should be reviewed independently before relicensing or commercial distribution. Nothing in this document grants new rights to third-party content.
+No repository-wide license is declared. This document grants no new rights to the code, research text or third-party data. Original project context is preserved in the [canonical source revision](https://github.com/NeuraX-JB/Henry-Hub-Futures-Curve-Explorer-How-the-Natural-Gas-Market-prices-winter/tree/80c2e5321dadc95aadd4c7f65792fb15f0e2f156).

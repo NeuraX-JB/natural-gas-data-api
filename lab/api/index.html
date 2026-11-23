@@ -10,13 +10,14 @@
       content="Pull public Lower 48 storage, degree-day weather and Henry Hub spot data into a notebook with one HTTP request."
     />
     <link rel="stylesheet" href="style.css" />
+    <script defer src="response.js"></script>
     <script defer src="api.js"></script>
   </head>
   <body data-page="explore">
     <a class="skip" href="#explore">Skip to dataset</a>
     <header class="mast">
       <div class="wrap">
-        <a class="wordmark" href="../"
+        <a class="wordmark" href="../../"
           ><span class="mark" aria-hidden="true">≋</span>Henry Hub Research</a
         >
         <nav aria-label="API">
@@ -30,7 +31,7 @@
           <div class="label">Research data · API v1</div>
           <h1>Natural Gas Data API</h1>
           <p>
-            Bring Lower 48 storage, U.S. heating and cooling degree days, and Henry Hub spot prices
+            Bring Lower 48 storage, contiguous U.S. heating and cooling degree days, and Henry Hub spot prices
             into one weekly dataset.
           </p>
         </div>
@@ -42,24 +43,26 @@
     </section>
     <main class="wrap workspace" id="explore">
       <div class="error" id="error" role="alert" hidden></div>
+      <p class="snapshot-note" id="snapshot-note">This repository contains a frozen source edition. Loading its timestamp…</p>
+      <noscript><p class="error">Interactive previews require JavaScript. Read the <a href="v1/index.json">catalog</a> or <a href="v1/weekly.json">weekly JSON</a> directly.</p></noscript>
       <section class="panel pad">
         <div class="section-head">
           <div>
             <h2>Explore an endpoint</h2>
-            <p>Choose a resource and a published observation window.</p>
+            <p>Choose a resource and an observation window in this edition.</p>
           </div>
           <a class="btn" href="natural_gas_api.ipynb" download>Download notebook</a>
         </div>
         <div class="controls">
           <label
-            >Dataset<select id="dataset">
+            >Dataset<select id="dataset" data-needs-catalog disabled>
               <option value="weekly">Joined weekly</option>
               <option value="storage">Working gas storage</option>
               <option value="weather">Heating and cooling</option>
               <option value="spot">Henry Hub spot</option>
             </select></label
           ><label
-            >Observations<select id="partition">
+            >Observations<select id="partition" data-needs-catalog disabled>
               <option value="recent">Latest 52 weeks</option>
             </select></label
           >
@@ -70,19 +73,19 @@
         <p class="hint" id="about">Loading data documentation…</p>
         <div class="flexrow tool-row">
           <div class="snippet-tabs" role="group" aria-label="Code examples">
-            <button type="button" data-code="python" aria-pressed="true">Python</button
-            ><button type="button" data-code="curl" aria-pressed="false">cURL</button
-            ><button type="button" data-code="js" aria-pressed="false">JavaScript</button>
+            <button type="button" data-needs-catalog disabled data-code="python" aria-pressed="true">Python</button
+            ><button type="button" data-needs-catalog disabled data-code="curl" aria-pressed="false">cURL</button
+            ><button type="button" data-needs-catalog disabled data-code="js" aria-pressed="false">JavaScript</button>
           </div>
           <div class="buttons">
             <span class="copy-note" id="notice" role="status"></span
-            ><button class="btn" type="button" id="copy-code">Copy code</button
-            ><button class="btn primary" type="button" id="copy-url">Copy URL</button>
+            ><button class="btn" type="button" id="copy-code" data-needs-catalog disabled>Copy code</button
+            ><button class="btn primary" type="button" id="copy-url" data-needs-catalog disabled>Copy URL</button>
           </div>
         </div>
-        <pre id="snippet" tabindex="0"></pre>
+        <pre id="snippet" tabindex="0" aria-label="Request example"></pre>
       </section>
-      <section class="panel" aria-labelledby="preview-title">
+      <section class="panel" id="preview" aria-labelledby="preview-title" aria-busy="true">
         <div class="flexrow tablehead">
           <div>
             <h2 id="preview-title">Response preview</h2>
@@ -91,7 +94,8 @@
           <button type="button" class="btn" id="csv" disabled>Export CSV</button>
         </div>
         <div class="tablebox" tabindex="0" aria-label="Response preview table">
-          <table>
+          <table aria-describedby="table-hint">
+            <caption id="table-caption">Selected observations</caption>
             <thead id="t-head"></thead>
             <tbody id="t-body"></tbody>
           </table>
@@ -152,7 +156,7 @@
       <footer class="footer">
         <span>Henry Hub Research · Natural Gas Data API</span
         ><span class="footlinks"
-          ><a href="status.html">Data status</a><a href="../">Research portfolio</a></span
+          ><a href="status.html">Data status</a><a href="../../">Project home</a></span
         >
       </footer>
     </main>
