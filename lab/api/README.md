@@ -33,11 +33,13 @@ All paths below start at `v1/`. Time-series arrays are chronological.
 | `spot.json` | Observed daily Henry Hub quotes in USD/MMBtu |
 | `index.json` | Fields, units, source URLs, retrieval times, coverage and supported years |
 
-Choose a published year from `index.json`. To select individual dates within a year, filter its returned array. API JSON paths are static. The web explorer shares selections using URL parameters and exports the selected endpoint to CSV.
+Choose a year listed in `datasets.weekly.years` in [the catalog](v1/index.json). Annual partitions contain joined storage weeks. For earlier weather or spot history, request the corresponding full series. For a narrower date range, filter the returned array in your code. The explorer previews up to six rows newest first and exports the entire selection to CSV. JSON nulls become empty CSV cells.
 
 ## Alignment
 
 The joined data uses Friday EIA storage dates as its calendar. Weather sums cover the preceding Friday through Thursday (inclusive). Spot uses the arithmetic mean of reported quotes in that same window, rounded to four decimal places. `spot_days` gives the number of observations behind each price. Missing quotes receive no weight. Weeks with zero price observations have a null mean. Zero degree days and unchanged inventories remain zero. Historic files can incorporate revisions, and the retrieval timestamp marks when this edition obtained its sources.
+
+For the week ending 13 November 2026, the price observations on 6, 9, 10, 11 and 12 November were $2.60, $2.89, $3.00, $3.00 and $3.00 per MMBtu. Their sum divided by five gives $2.898 per MMBtu. The 13 November quote falls in the next sampling window. [Daily quotes](v1/spot.json) · [Joined result](v1/latest.json)
 
 EIA is the source of working gas stocks and Henry Hub spot observations. EIA attributes its underlying spot price series to Refinitiv, an LSEG business. NOAA's Climate Prediction Center supplies population-weighted degree days. The [source documentation](../data/README.md) describes coverage, cleaning and original sources.
 
