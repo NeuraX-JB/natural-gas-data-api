@@ -1,31 +1,41 @@
 # Natural Gas Data API
 
-**John Barreto · Independent natural gas research**
+John Barreto · Independent natural gas research
 
-Versioned static JSON endpoints for EIA storage, NOAA degree days and Henry Hub spot prices.
+Compare weekly changes in U.S. Lower 48 working gas stocks with observed weather and Henry Hub spot prices. Each row uses a storage Friday as its reference date, so the temperature and price observations can be traced back to the same seven-day window.
 
-**[Open the live project](https://neurax-jb.github.io/natural-gas-data-api/) · [Research portfolio](https://neurax-jb.github.io/Henry-Hub-Futures-Curve-Explorer-How-the-Natural-Gas-Market-prices-winter/lab/)**
+[Explore the data](https://neurax-jb.github.io/natural-gas-data-api/lab/api/) · [Read the API reference](lab/api/README.md) · [Open the example notebook](lab/api/natural_gas_api.ipynb)
 
-**Methods and tools:** Python, data engineering, JSON, CSV, Jupyter.
+## Read one week
 
-## Research question
-How can storage, observed weather and spot price observations be aligned into a consistent research dataset?
+For **13 November 2026**, Lower 48 stocks rose from **3,862 to 3,882 Bcf**, a net increase of **20 billion cubic feet**. Reclassifications can affect that difference. In the preceding Friday–Thursday window, 6–12 November, NOAA recorded **77 heating degree days and 6 cooling degree days** on a population-weighted basis. Five Henry Hub spot quotes averaged **$2.898 per MMBtu**. These observations line up in time. Explaining the stock increase requires additional evidence on supply and demand. [Joined row](lab/api/v1/latest.json) · [Both inventory readings](lab/api/v1/years/2026.json)
 
-The API provides public static JSON endpoints, source metadata, weekly joins and missing-value conventions. In the 23 November 2026 source snapshot it contained 881 weekly storage rows, 2,394 weekly weather rows and 5,732 spot observations. Coverage for this edition is available on the [local data status page](lab/api/status.html). This repository does not refresh automatically.
+Read that row from a clone with Python, from the repository root.
 
-## Methods and evidence
-- [Endpoint and field documentation](lab/api/README.md)
-- [Example Jupyter notebook](lab/api/natural_gas_api.ipynb)
-- [API builder](lab/api/build_api.py)
-- [Source provenance](lab/data/README.md)
+```python
+import json
+from pathlib import Path
 
-## Run locally
-Serve the root with `python -m http.server 8000` and visit `http://localhost:8000/`. Rebuild the JSON from the checked-in source snapshots with `python lab/api/build_api.py`; validate with `python -m unittest discover -s lab/api` and `node --test lab/api/test_response.cjs`. Live data refreshes are maintained in the canonical research repository.
+week = json.loads(Path("lab/api/v1/latest.json").read_text(encoding="utf-8"))
+print(week["week_ending"], week["change_bcf"], week["spot_days"])
+# 2026-11-13 20 5
+```
 
-## Source and publication
+For an HTTP request, fetch the [same JSON object](https://neurax-jb.github.io/natural-gas-data-api/lab/api/v1/latest.json). For multiple weeks, use the [most recent 52](lab/api/v1/recent.json) or [all joined weeks](lab/api/v1/weekly.json). Both return arrays ordered oldest first.
 
-This repository is a project-specific snapshot of the [canonical research lab](https://github.com/NeuraX-JB/Henry-Hub-Futures-Curve-Explorer-How-the-Natural-Gas-Market-prices-winter). This repository has its own [local entry page](index.html) and standalone Pages deployment. The original live research site and automated updates remain in the canonical repository. Check the [source and attribution notes](DATA_SOURCES.md) before reusing third-party data. No new license is granted. Research and educational use; not investment advice.
+## Coverage in the 23 November 2026 edition
 
-## Verification and source edition
+| Series | First observation | Last observation | Rows |
+| --- | --- | --- | ---: |
+| Joined storage weeks | 1 Jan 2010 | 13 Nov 2026 | 881 |
+| EIA Lower 48 working gas stocks (Bcf) | 1 Jan 2010 | 13 Nov 2026 | 881 |
+| NOAA contiguous U.S. heating and cooling degree days (65°F base) | 9 Jan 1981 | 20 Nov 2026 | 2,394 |
+| EIA Henry Hub daily spot quotes (USD/MMBtu) | 7 Jan 1997 | 17 Nov 2026 | 5,732 |
 
-See [validation commands](VALIDATION.md) and the [frozen source manifest](SOURCE_SNAPSHOT.json). The API builder stages a complete generated directory before replacing it; build before deploying, rather than inside a live web root.
+This is a frozen edition. The last joined date follows the storage series. Individual weather and spot series extend further. In the first joined week, `change_bcf` is `null` because the previous inventory is outside the snapshot. That same row has `cdd = 0`, an observed zero. [Field definitions and coverage](lab/api/v1/index.json) · [First year of joined observations](lab/api/v1/years/2010.json)
+
+## Reproduce and cite
+
+To rebuild the JSON from the checked-in CSVs, run `python lab/api/build_api.py` from the repository root. To browse the explorer locally, run `python -m http.server 8000` there and open [the local explorer](http://localhost:8000/lab/api/). The [validation guide](VALIDATION.md) lists the checks for data integrity and the Python and JavaScript regression tests.
+
+For a reproducible citation, record the repository commit, the endpoint path, the observation period and the source edition. The 23 November retrieval includes any historical revisions then present. A historical pre-release study needs separate evidence of when each input first became available. [Source records and hashes](lab/data/manifest.json) · [Attribution and reuse](DATA_SOURCES.md) · [Original research lab revision](https://github.com/NeuraX-JB/Henry-Hub-Futures-Curve-Explorer-How-the-Natural-Gas-Market-prices-winter/tree/80c2e5321dadc95aadd4c7f65792fb15f0e2f156)

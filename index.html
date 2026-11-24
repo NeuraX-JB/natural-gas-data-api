@@ -9,15 +9,15 @@
 <body>
   <a class="skip" href="#main">Skip to project</a>
   <header class="mast"><div class="wrap"><a class="wordmark" href="./" aria-current="page">John Barreto · Data API</a><nav aria-label="Project"><a href="lab/api/">Explorer</a><a href="lab/api/status.html">Data status</a></nav></div></header>
-  <section class="hero"><div class="wrap"><div class="label">Public research data · Version 1</div><h1>Natural gas,<br>one weekly calendar.</h1><p>Lower 48 working gas stocks, contiguous U.S. observed degree days and Henry Hub spot prices, with source provenance and explicit missing values.</p></div></section>
+  <section class="hero"><div class="wrap"><h1>U.S. gas storage, weather and spot prices</h1><p>Look up a storage week and compare the inventory change with observed heating and cooling degree days and the average Henry Hub spot price.</p></div></section>
   <main class="wrap workspace" id="main">
-    <p class="snapshot-note"><strong>Frozen source edition · 23 November 2026.</strong> These observations do not refresh automatically. Historical revisions and later publication dates make this an observational dataset, not a point-in-time trading record.</p>
+    <p class="snapshot-note"><strong>Frozen source edition · 23 November 2026.</strong> The latest joined week ends 13 November. Historical values reflect revisions available when the sources were retrieved.</p>
     <div class="home-grid">
-      <section class="panel pad"><h2>Explore the data</h2><p>Choose an endpoint, inspect its units, copy a request and export the selected window to CSV.</p><a class="btn primary" href="lab/api/">Open API explorer</a></section>
+      <section class="panel pad"><h2>Explore the data</h2><p>Preview the newest six rows, copy the JSON request or export the entire selection to CSV.</p><a class="btn primary" href="lab/api/">Open API explorer</a></section>
       <section class="panel pad"><h2>Inspect provenance</h2><p>Review source coverage, successful retrieval times, saved pipeline status and original source links.</p><a class="btn" href="lab/api/status.html">Check data status</a></section>
       <section class="panel pad"><h2>Use a notebook</h2><p>Load the same edition and check calendar alignment, missing-price denominators and stock changes.</p><a class="btn" href="lab/api/natural_gas_api.ipynb" download>Download notebook</a></section>
     </div>
-    <section class="panel pad" style="margin-top:19px"><h2>Start with the contract</h2><p>The <a href="lab/api/v1/index.json">JSON catalog</a> describes fields and units. <a href="lab/api/v1/weekly.json">Weekly data</a> returns an array; <a href="lab/api/v1/latest.json">latest.json</a> returns one object. Missing values are <code>null</code>; an observed zero stays zero.</p><p>Read the <a href="lab/api/README.md">API documentation</a> and <a href="DATA_SOURCES.md">source attribution</a>, or inspect the <a href="https://github.com/NeuraX-JB/natural-gas-data-api">source repository</a>.</p></section>
+    <section class="panel pad" style="margin-top:19px"><h2>Read the week ending 13 November 2026</h2><p>Lower 48 stocks rose 20 Bcf to 3,882 Bcf. The preceding Friday through Thursday recorded 77 heating degree days and 6 cooling degree days, and five Henry Hub quotes averaged $2.898 per MMBtu. <a href="lab/api/?resource=weekly&amp;window=latest">Inspect this row in the explorer</a> or <a href="lab/api/v1/latest.json">read its JSON</a>.</p><p>Read the <a href="https://github.com/NeuraX-JB/natural-gas-data-api/blob/main/lab/api/README.md">API documentation</a> and <a href="https://github.com/NeuraX-JB/natural-gas-data-api/blob/main/DATA_SOURCES.md">source attribution</a>, or inspect the <a href="https://github.com/NeuraX-JB/natural-gas-data-api">source repository</a>.</p></section>
     <footer class="footer"><span>John Barreto · Independent natural gas research</span><a href="https://github.com/NeuraX-JB">GitHub portfolio</a></footer>
   </main>
 </body>
